@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView first, second, result, yourCommonMovie, pickAMovie, startText;
     private ProgressBar progressBar;
-    private Button nextPlayer, startButton;
+    private Button nextPlayer, startButton, playAgain;
     private boolean isSecond;
     private final String apiCall = "https://imdb-api.com/en/API/Top250Movies/k_ydo7ri1i";
     private List<Id> ids;
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         pickAMovie = findViewById(R.id.pickAMovie);
         startText = findViewById(R.id.startText);
         startButton = findViewById(R.id.startButton);
+        playAgain = findViewById(R.id.playAgain);
 
 
         first.setVisibility(View.INVISIBLE);
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         result.setVisibility(View.INVISIBLE);
         nextPlayer.setVisibility(View.INVISIBLE);
         yourCommonMovie.setVisibility(View.INVISIBLE);
+        playAgain.setVisibility(View.INVISIBLE);
         startButton.setVisibility(View.INVISIBLE);
         startText.setVisibility(View.INVISIBLE);
         firstPicks = new ArrayList<>();
@@ -97,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         switchMovies();
         first.setVisibility(View.VISIBLE);
         second.setVisibility(View.VISIBLE);
+        pickAMovie.setText("Second player picks");
         pickAMovie.setVisibility(View.VISIBLE);
         nextPlayer.setVisibility(View.INVISIBLE);
     }
@@ -109,6 +112,23 @@ public class MainActivity extends AppCompatActivity {
 
         first.setVisibility(View.VISIBLE);
         second.setVisibility(View.VISIBLE);
+        pickAMovie.setText("First player picks");
+        pickAMovie.setVisibility(View.VISIBLE);
+    }
+
+    public void againCB(View view) {
+        result.setVisibility(View.INVISIBLE);
+        yourCommonMovie.setVisibility(View.INVISIBLE);
+        playAgain.setVisibility(View.INVISIBLE);
+        firstPicks = new ArrayList<>();
+        secondPicks = new ArrayList<>();
+        isSecond = false;
+        counter = 0;
+        switchMovies();
+
+        first.setVisibility(View.VISIBLE);
+        second.setVisibility(View.VISIBLE);
+        pickAMovie.setText("First player picks");
         pickAMovie.setVisibility(View.VISIBLE);
     }
 
@@ -120,9 +140,10 @@ public class MainActivity extends AppCompatActivity {
             if(isSecond) {
                 firstPicks.retainAll(secondPicks);
                 yourCommonMovie.setVisibility(View.VISIBLE);
+                playAgain.setVisibility(View.VISIBLE);
                 result.setVisibility(View.VISIBLE);
                 if(firstPicks.size() > 0) {
-                    result.setText(firstPicks.get(new Random().nextInt((firstPicks.size() + 1))).toString());
+                    result.setText(firstPicks.get(new Random().nextInt((firstPicks.size()))).toString());
                 } else {
                     result.setText("You have no common movies!");
                 }
@@ -189,8 +210,6 @@ public class MainActivity extends AppCompatActivity {
                                     progressBar.setVisibility(View.INVISIBLE);
                                     startButton.setVisibility(View.VISIBLE);
                                     startText.setVisibility(View.VISIBLE);
-
-                                    switchMovies();
                                 }
 
                             }
